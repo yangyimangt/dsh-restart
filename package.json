@@ -1,9 +1,33 @@
 {
-  "name": "dsh-restart",
+  "name": "@yangyimangt/dsh-restart",
   "version": "1.0.0",
-  "private": true,
+  "description": "DeepSeek Harness 桌面端重启按钮：侧边栏「更多」→ 重启应用，应用自己关掉再重新打开。A restart entry for the DeepSeek Harness desktop app.",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "restart",
+    "relaunch",
+    "desktop",
+    "electron"
+  ],
+  "author": "yangyimangt",
+  "license": "MIT",
   "type": "module",
-  "description": "Adds a Restart entry at the sidebar foot that relaunches the DeepSeek Harness desktop app.",
+  "icon": "./icon.svg",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yangyimangt/dsh-restart.git"
+  },
+  "homepage": "https://github.com/yangyimangt/dsh-restart#readme",
+  "bugs": {
+    "url": "https://github.com/yangyimangt/dsh-restart/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -16,14 +40,42 @@
     "restart-helper.js",
     "cordis.patch.yml",
     "locale/*.json",
-    "icon.svg"
+    "icon.svg",
+    "README.md",
+    "LICENSE"
   ],
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
     "client": {
       "platform": "web",
       "immediately": true,
-      "inject": ["@deepseek-ai/dsh-client-ui-slots", "@deepseek-ai/dsh-client-locale"]
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    },
+    "marketplace": {
+      "profiles": ["desktop"],
+      "requiresBuildApproval": false,
+      "requiresRestart": true,
+      "manualSteps": false
+    },
+    "permissions": {
+      "level": "medium",
+      "files": "none",
+      "network": "none",
+      "commands": "node",
+      "credentials": [],
+      "externalServices": [],
+      "notes": "Spawns one detached Node helper (restart-helper.js) with process.execPath to relaunch the app, and writes %TEMP%/dsh-restart.log. No file writes elsewhere, no network, no credentials."
+    },
+    "compatibility": {
+      "dsh": ">=0.2.1-rc.5 <0.3.0-0",
+      "dshReleases": {
+        "0.2.1-rc.5": "compatible"
+      },
+      "node": ">=22",
+      "profiles": ["desktop"]
     }
   }
 }
